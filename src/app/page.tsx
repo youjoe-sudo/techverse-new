@@ -32,7 +32,7 @@ export default function HomePage() {
               <Image 
                 src="/logo.png" 
                 alt="Tech Verse Logo"
-                width={90}     
+                width={90}    
                 height={90}    
                 className="object-contain rounded-full"
                 priority       
@@ -67,6 +67,61 @@ export default function HomePage() {
             >
               تواصل معنا
             </Link>
+          </div>
+        </div>
+
+        {/* ================= BOOTCAMP REGISTRATION SECTION (جديد ومثير للإنتباه) ================= */}
+        <div className="w-full max-w-5xl bg-gradient-to-br from-violet-600 to-indigo-700 dark:from-violet-900 dark:to-indigo-950 rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl shadow-indigo-500/20 dark:shadow-none border border-violet-500/30">
+          {/* تأثيرات خلفية للسكشن */}
+          <div className="absolute -bottom-10 -left-10 w-44 h-44 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute -top-10 -right-10 w-44 h-44 bg-fuchsia-500/20 rounded-full blur-2xl pointer-events-none" />
+          
+          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
+            <div className="flex-1 space-y-6 text-right">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-white/20 text-white backdrop-blur-sm border border-white/10 uppercase tracking-wide">
+                🔥 لفترة محدودة جداً
+              </span>
+              
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight leading-tight">
+                سجل الآن في الـ <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-400">NextGen Bootcamp 2026</span> واضمن مقعدك!
+              </h2>
+              
+              <p className="text-sm sm:text-base text-indigo-100/90 leading-relaxed max-w-2xl">
+                انضم إلينا في 7 أيام مكثفة من التعلم الفعلي والتطبيق العملي عبر الإنترنت. اكتشف شغفك الحقيقي، وابدأ في بناء مستقبلك المهني والبرمجي بأحدث أدوات الذكاء الاصطناعي والتكنولوجيا الحالية.
+              </p>
+
+              {/* مميزات سريعة تشد العين */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-semibold text-indigo-50 pt-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-amber-400 text-lg">✔</span> تطبيق عملي ومشاريع حقيقية.
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-amber-400 text-lg">✔</span> شهادة معتمدة عند إتمام التدريب.
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-amber-400 text-lg">✔</span> منصة تعليمية ذكية ومتابعة دورية.
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-amber-400 text-lg">✔</span> كود خصم خاص للمجموعات والطلاب.
+                </div>
+              </div>
+            </div>
+
+            {/* زرار التقديم الطرش */}
+            <div className="w-full lg:w-auto shrink-0 flex flex-col items-center gap-2">
+              <div className="relative group w-full sm:w-auto">
+                {/* توهج خلف الزر */}
+                <div className="absolute inset-0 bg-amber-400 rounded-2xl blur-md opacity-40 group-hover:opacity-70 transition-opacity" />
+                
+                <Link 
+                  href="/register" 
+                  className="w-full sm:w-auto relative inline-flex items-center justify-center gap-3 px-10 py-5 font-black text-slate-950 bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-400 hover:from-amber-400 hover:via-yellow-400 hover:to-amber-300 shadow-2xl rounded-2xl text-center text-lg transition-all duration-300 hover:scale-[1.05] active:scale-[0.98]"
+                >
+                  سجل الآن وقدم فوراً 🚀
+                </Link>
+              </div>
+              <span className="text-xs text-indigo-200/70 font-medium">التقديم يأخذ أقل من دقيقتين</span>
+            </div>
           </div>
         </div>
 
