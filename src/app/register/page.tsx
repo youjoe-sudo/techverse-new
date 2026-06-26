@@ -322,48 +322,67 @@ export default function RegistrationPage() {
                 )}
 
                 {step === 2 && (
-                  <div className="space-y-6">
-                    <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-3">Step 2: Payment Information</h2>
+  <div className="space-y-6">
+    <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-3">Step 2: Payment Information</h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 border border-slate-200 rounded-xl p-5">
-                      <div className="space-y-2 text-sm border-b md:border-b-0 md:border-r border-slate-200 pb-4 md:pb-0 md:pr-4">
-                        <span className="text-xs uppercase font-bold text-slate-400 tracking-wider">Event Summary</span>
-                        <div className="flex justify-between"><span className="text-slate-600">Event:</span> <strong className="text-slate-800">Tech Verse 2026</strong></div>
-                        <div className="flex justify-between"><span className="text-slate-600">Platform:</span> <strong className="text-slate-800">Google Meet</strong></div>
-                        <div className="flex justify-between"><span className="text-slate-600">Certificate:</span> <strong className="text-slate-800">Included & Verified From TechVerse</strong></div>
-                      </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 border border-slate-200 rounded-xl p-5">
+      <div className="space-y-2 text-sm border-b md:border-b-0 md:border-r border-slate-200 pb-4 md:pb-0 md:pr-4">
+        <span className="text-xs uppercase font-bold text-slate-400 tracking-wider">Event Summary</span>
+        <div className="flex justify-between"><span className="text-slate-600">Event:</span> <strong className="text-slate-800">Tech Verse 2026</strong></div>
+        <div className="flex justify-between"><span className="text-slate-600">Platform:</span> <strong className="text-slate-800">Google Meet</strong></div>
+        <div className="flex justify-between"><span className="text-slate-600">Certificate:</span> <strong className="text-slate-800">Included & Verified From TechVerse</strong></div>
+      </div>
 
-                      <div className="flex flex-col justify-between space-y-3">
-                        <div>
-                          <label htmlFor="discountCode" className="block text-xs uppercase font-bold text-slate-400 tracking-wider mb-1">Have a Promo Code?</label>
-                          <div className="flex space-x-2">
-                            <input type="text" id="discountCode" value={discountCode} onChange={(e) => setDiscountCode(e.target.value)} className="flex-grow px-3 py-1.5 rounded-lg border border-slate-300 text-sm uppercase outline-none" placeholder="CODE" />
-                            <button type="button" onClick={handleApplyCoupon} className="bg-slate-800 hover:bg-slate-900 text-white font-medium text-xs px-4 py-2 rounded-lg transition">Apply</button>
-                          </div>
-                          {couponMessage.text && <p className={`text-xs mt-1 font-medium ${couponMessage.isError ? 'text-red-500' : 'text-emerald-600'}`}>{couponMessage.text}</p>}
-                        </div>
-                        <div className="pt-2 border-t border-dashed border-slate-200 space-y-1 text-sm">
-                          <div className="flex justify-between text-slate-500"><span>Base Price:</span> <span>{BASE_PRICE} EGP</span></div>
-                          <div className="flex justify-between text-base font-bold text-slate-900 pt-1 border-t border-slate-200"><span>Final Price:</span> <span className="text-blue-600">{finalPrice} EGP</span></div>
-                        </div>
-                      </div>
-                    </div>
+      <div className="flex flex-col justify-between space-y-3">
+        <div>
+          <label htmlFor="discountCode" className="block text-xs uppercase font-bold text-slate-400 tracking-wider mb-1">Have a Promo Code?</label>
+          <div className="flex space-x-2">
+            <input type="text" id="discountCode" value={discountCode} onChange={(e) => setDiscountCode(e.target.value)} className="flex-grow px-3 py-1.5 rounded-lg border border-slate-300 text-sm uppercase outline-none" placeholder="CODE" />
+            <button type="button" onClick={handleApplyCoupon} className="bg-slate-800 hover:bg-slate-900 text-white font-medium text-xs px-4 py-2 rounded-lg transition">Apply</button>
+          </div>
+          {couponMessage.text && <p className={`text-xs mt-1 font-medium ${couponMessage.isError ? 'text-red-500' : 'text-emerald-600'}`}>{couponMessage.text}</p>}
+        </div>
+        <div className="pt-2 border-t border-dashed border-slate-200 space-y-1 text-sm">
+          <div className="flex justify-between text-slate-500"><span>Base Price:</span> <span>{BASE_PRICE} EGP</span></div>
+          <div className="flex justify-between text-base font-bold text-slate-900 pt-1 border-t border-slate-200"><span>Final Price:</span> <span className="text-blue-600">{finalPrice} EGP</span></div>
+        </div>
+      </div>
+    </div>
 
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label htmlFor="paymentMethod" className="block text-sm font-medium text-slate-700 mb-1">Payment Method | طريقة الدفع<span className="text-red-500">*</span></label>
-                          <select id="paymentMethod" value={formData.paymentMethod} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50/50 text-sm text-slate-700">
-                            <option value="Vodafone Cash">Vodafone Cash</option>
-                            <option value="InstaPay">InstaPay</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label htmlFor="transactionPhone" className="block text-sm font-medium text-slate-700 mb-1">Transaction Phone Number | رقم النحويل<span className="text-red-500">*</span></label>
-                          <input type="text" id="transactionPhone" value={formData.transactionPhone} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm" placeholder="Wallet number" />
-                          {errors.transactionPhone && <p className="mt-1 text-xs text-red-500">Required field.</p>}
-                        </div>
-                      </div>
+    {/* معلومات الحساب البنكي / المحفظة ديناميكياً حسب اختيار طريقة الدفع */}
+    <div className="bg-blue-50/60 border border-blue-200 rounded-xl p-4 text-sm text-slate-800 space-y-2 animate-fade-in">
+      <span className="text-xs uppercase font-bold text-blue-600 tracking-wider block mb-1">⚠️ تفاصيل بيانات التحويل:</span>
+      {formData.paymentMethod === 'Vodafone Cash' ? (
+        <div className="space-y-1">
+          <p>برجاء تحويل المبلغ إلى محفظة فودافون كاش التالية:</p>
+          <p>📱 الرقم: <strong className="text-base font-mono text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-100 select-all">01285536282</strong></p>
+          <p>👤 باسم العميل: <strong className="text-slate-900">Mohamed A**** A*********</strong></p>
+        </div>
+      ) : (
+        <div className="space-y-1">
+          <p>برجاء تحويل المبلغ عن طريق تطبيق انستا باي (InstaPay):</p>
+          <p>🆔 عنوان الدفع (IPA): <strong className="text-base font-mono text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-100 select-all">abdelfata726@instapay</strong></p>
+          <p>📱 أو رقم الهاتف: <strong className="text-base font-mono text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-100 select-all">01285536282</strong></p>
+          <p>👤باسم : <strong className="text-slate-900">Mohamed A**** A*********</strong></p>
+        </div>
+      )}
+    </div>
+
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="paymentMethod" className="block text-sm font-medium text-slate-700 mb-1">Payment Method | طريقة الدفع<span className="text-red-500">*</span></label>
+          <select id="paymentMethod" value={formData.paymentMethod} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50/50 text-sm text-slate-700">
+            <option value="Vodafone Cash">Vodafone Cash</option>
+            <option value="InstaPay">InstaPay</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="transactionPhone" className="block text-sm font-medium text-slate-700 mb-1">Transaction Phone Number | رقم التحويل<span className="text-red-500">*</span></label>
+          <input type="text" id="transactionPhone" value={formData.transactionPhone} onChange={handleInputChange} className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm" placeholder="Wallet number" />
+          {errors.transactionPhone && <p className="mt-1 text-xs text-red-500">Required field.</p>}
+        </div>
+      </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
