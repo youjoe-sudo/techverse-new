@@ -363,7 +363,7 @@ export default function RegistrationPage() {
           <p>برجاء تحويل المبلغ عن طريق تطبيق انستا باي (InstaPay):</p>
           <p>🆔 عنوان الدفع (IPA): <strong className="text-base font-mono text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-100 select-all">abdelfata726@instapay</strong></p>
           <p>📱 أو رقم الهاتف: <strong className="text-base font-mono text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-100 select-all">01285536282</strong></p>
-          <p>👤 باسم العميل: <strong className="text-slate-900">Mohamed A**** A*********</strong></p>
+          <p>👤باسم : <strong className="text-slate-900">Mohamed A**** A*********</strong></p>
         </div>
       )}
     </div>
