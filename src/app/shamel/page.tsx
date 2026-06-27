@@ -332,7 +332,7 @@ const MCQ_POOL = [
   },
   {
     id: "m30",
-    question: { ar: "أي مما يلي يعتبر قيمة صحيحة لمتغير من النوع Boolean؟", en: "Which of the following is a valid value for a Boolean variable?" },
+    question: { ar: "ANY مما يلي يعتبر قيمة صحيحة لمتغير من النوع Boolean؟", en: "Which of the following is a valid value for a Boolean variable?" },
     options: [
       { id: "a", text: { ar: "\"True\"", en: "\"True\"" } },
       { id: "b", text: { ar: "True", en: "True" } },
@@ -679,7 +679,6 @@ const MCQ_POOL = [
   }
 ];
 
-// قاعدة الأسئلة المقالية والبرمجية (15 سؤالاً كاملاً)
 const ESSAY_POOL = [
   { id: "e1", question: { ar: "اكتب برنامجاً بلغة بايثون يطلب من المستخدم إدخال عمره، وإذا كان عمره أكبر من أو يساوي 18، يطبع 'يمكنك استخراج بطاقة شخصية'، وإلا يطبع 'أنت صغير'.", en: "Write a Python program that asks the user for their age. If it is >= 18, print 'يمكنك استخراج بطاقة شخصية', otherwise print 'أنت صغير'." } },
   { id: "e2", question: { ar: "اكتب خوارزمية بالخطوات (Algorithm) واضحة ومسلسلة لبرنامج 'منبه الموبايل' اليومي الخاص بك.", en: "Write a step-by-step Algorithm for your daily mobile alarm system." } },
@@ -698,7 +697,6 @@ const ESSAY_POOL = [
   { id: "e15", question: { ar: "اكتب كود بايثون بسيط لعمل آلة حاسبة تجمع وتطرح رقمين يستقبلهما البرنامج من الكيبورد.", en: "Write a simple Python script for a calculator that adds and subtracts two numbers taken from the keyboard." } }
 ];
 
-// دالة خلط عناصر المصفوفات لضمان الترتيب العشوائي الكامل
 function shuffleArray(array: any[]) {
   const arr = [...array];
   for (let i = arr.length - 1; i > 0; i--) {
@@ -711,28 +709,22 @@ function shuffleArray(array: any[]) {
 export default function TechVerseFinalExam() {
   const [lang, setLang] = useState<"ar" | "en">("ar");
 
-  // بيانات الطالب الشخصية عند البدء
   const [studentInfo, setStudentInfo] = useState({ name: "", phone: "", expectedScore: "" });
   const [isRegistered, setIsRegistered] = useState(false);
 
-  // الأسئلة المختارة عشوائياً للطالب الحالي (20 اختيار و 5 مقالي)
   const [selectedMCQs, setSelectedMCQs] = useState<any[]>([]);
   const [selectedEssays, setSelectedEssays] = useState<any[]>([]);
 
-  // إجابات الطالب
   const [mcqAnswers, setMcqAnswers] = useState<{ [key: string]: string }>({});
   const [essayAnswers, setEssayAnswers] = useState<{ [key: string]: string }>({});
 
-  // حالات التحكم والـ Anti-cheat
   const [examStarted, setExamStarted] = useState(false);
   const [examSubmitted, setExamSubmitted] = useState(false);
   const [cheatTriggered, setCheatTriggered] = useState(false);
 
-  // تايمر الامتحان بالثواني (40 دقيقة = 2400 ثانية)
   const [timeLeft, setTimeLeft] = useState(2400);
   const examSubmittedRef = useRef(false);
 
-  // توليد ورقة الامتحان عند التسجيل
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     if (!studentInfo.name || !studentInfo.phone || !studentInfo.expectedScore) {
@@ -740,10 +732,9 @@ export default function TechVerseFinalExam() {
       return;
     }
 
-    // سحب 20 اختيار من الـ 60 و 5 مقالي من الـ 15 عشوائياً بالكامل
     const randomizedMCQs = shuffleArray(MCQ_POOL).slice(0, 20).map((q) => ({
       ...q,
-      options: shuffleArray(q.options) // خلط الاختيارات الأربعة جوة كل سؤال كمان!
+      options: shuffleArray(q.options)
     }));
     const randomizedEssays = shuffleArray(ESSAY_POOL).slice(0, 5);
 
@@ -751,12 +742,9 @@ export default function TechVerseFinalExam() {
     setSelectedEssays(randomizedEssays);
     setIsRegistered(true);
     setExamStarted(true);
-    setTimeLeft(2400); // ريست للتايمر
+    setTimeLeft(2400);
   };
 
-  // ==========================================
-  // كود الـ Timer والتحكم في عداد الـ 40 دقيقة التنازلي
-  // ==========================================
   useEffect(() => {
     if (!examStarted || examSubmitted) return;
 
@@ -764,7 +752,6 @@ export default function TechVerseFinalExam() {
       setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
           clearInterval(timerInterval);
-          // إذا انتهى الوقت، سلم تلقائياً
           triggerAutoSubmit(false);
           return 0;
         }
@@ -775,36 +762,56 @@ export default function TechVerseFinalExam() {
     return () => clearInterval(timerInterval);
   }, [examStarted, examSubmitted]);
 
-  // ==========================================
-  // كود الـ Anti-Cheat ومراقبة الخروج من التاب
-  // ==========================================
+  // =======================================================
+  // نظام مكافحة الغش المطور الذكي (مراقبة الـ Blur والـ Visibility والـ Width فقط)
+  // =======================================================
   useEffect(() => {
     if (!examStarted || examSubmitted) return;
+
+    // حفظ العرض الأولي الفعلي للشاشة لحظة تشغيل وعرض ورقة التقييم
+    const initialWidth = window.innerWidth;
 
     const handleCheatDetection = () => {
       setCheatTriggered(true);
       triggerAutoSubmit(true);
     };
-window.addEventListener("resize", handleCheatDetection);
-    document.addEventListener("visibilitychange", () => {
+
+    const handleVisibilityChange = () => {
       if (document.hidden) handleCheatDetection();
-    });
+    };
+
+    const handleResize = () => {
+      // كيبورد الموبايل بتغير الارتفاع (height) فقط، العرض بيفضل زي ما هو
+      // لو العرض (width) اتغير بشكل ملحوظ، يبقى قسّم الشاشة أو فتح الـ Inspect element على الكمبيوتر
+      // حطينا فرق 40 بكسل للتسامح مع ظهور أو إخفاء الـ Scrollbars البرمجية بشكل مفاجئ
+      const widthDiff = Math.abs(window.innerWidth - initialWidth);
+      if (widthDiff > 40) {
+        handleCheatDetection();
+      }
+    };
+
+    // 1. مراقبة مغادرة الـ Tab أو إنزال المتصفح لأسفل
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // 2. مراقبة فقدان التركيز (تنبثق نافذة تانية أو برنامج فوق الـ Browser)
     window.addEventListener("blur", handleCheatDetection);
 
+    // 3. مراقبة الـ Resize الذكي (للعرض فقط لمنع تداخل كيبورد الموبايلات)
+    window.addEventListener("resize", handleResize);
+
     return () => {
-      document.removeEventListener("visibilitychange", handleCheatDetection);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("blur", handleCheatDetection);
+      window.removeEventListener("resize", handleResize);
     };
   }, [examStarted, examSubmitted]);
 
-  // دالة تحضير البيانات وإرسالها الفوري لتليجرام
   const triggerAutoSubmit = async (wasCheated: boolean = false) => {
     if (examSubmittedRef.current) return;
     examSubmittedRef.current = true;
     setExamSubmitted(true);
     setExamStarted(false);
 
-    // حساب نتيجة الاختياري في السيرفر دون إظهارها للطالب
     let mcqScore = 0;
     selectedMCQs.forEach((q) => {
       if (mcqAnswers[q.id] === q.correct) {
@@ -812,16 +819,15 @@ window.addEventListener("resize", handleCheatDetection);
       }
     });
 
-    // إعدادات البوت الخاص بك
-    const TELEGRAM_BOT_TOKEN = "8187426147:AAEybLVw2t36OKJE-QDNBzeseG9w9UASah8"; 
-    const TELEGRAM_CHAT_ID = "7752359121";
+    const TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"; 
+    const TELEGRAM_CHAT_ID = "YOUR_TELEGRAM_CHAT_ID";
 
     let msg = `🚨 *إشعار امتحان شامل - Tech Verse* 🚨\n\n`;
     msg += `👤 *اسم الطالب:* ${studentInfo.name}\n`;
     msg += `📞 *رقم الفون:* ${studentInfo.phone}\n`;
     msg += `🔮 *التوقع المسبق:* ${studentInfo.expectedScore}/100\n`;
     msg += `⏱️ *الوقت المتبقي عند التسليم:* ${Math.floor(timeLeft / 60)} دقيقة و ${timeLeft % 60} ثانية\n`;
-    msg += `⚠️ *حالة الغش/الخروج:* ${wasCheated ? "❌ نعم (تم قفل التاب!)" : timeLeft === 0 ? "⏰ إنتهى الوقت تلقائياً" : "✅ طبيعي"}\n\n`;
+    msg += `⚠️ *حالة الغش/الخروج:* ${wasCheated ? "❌ نعم (تم رصد تغيير حجم عرض الشاشة أو مغادرة التاب!)" : timeLeft === 0 ? "⏰ إنتهى الوقت تلقائياً" : "✅ طبيعي"}\n\n`;
     msg += `📊 *درجة الاختيارات:* *${mcqScore} من 20*\n\n`;
     msg += `📝 *إجابات الأسئلة المقالية والبرمجية للتصحيح:* \n`;
 
@@ -845,7 +851,6 @@ window.addEventListener("resize", handleCheatDetection);
     }
   };
 
-  // تنسيق الوقت المتبقي MM:SS
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -854,7 +859,6 @@ window.addEventListener("resize", handleCheatDetection);
 
   return (
     <div className={`min-h-screen bg-slate-950 text-slate-100 font-sans ${lang === "ar" ? "rtl" : "ltr"}`} dir={lang === "ar" ? "rtl" : "ltr"}>
-      {/* هيدر التحكم والتبديل بين اللغتين */}
       <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-xl font-bold text-indigo-400 tracking-wide">Tech Verse Portal</h1>
@@ -868,7 +872,6 @@ window.addEventListener("resize", handleCheatDetection);
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-12">
-        {/* المرحلة الأولى: فورم التسجيل وإدخال التوقعات الروشة */}
         {!isRegistered && !examSubmitted && (
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl">
             <h2 className="text-2xl font-bold mb-2 text-center text-indigo-400">
@@ -926,7 +929,7 @@ window.addEventListener("resize", handleCheatDetection);
               <div className="bg-amber-950/40 border border-amber-900/60 rounded-xl p-4 text-xs text-amber-300 space-y-2">
                 <p className="font-bold">⚠️ {lang === "ar" ? "تعليمات صارمة للتايمر ومكافحة الغش:" : "Strict Timer & Anti-Cheat Rules:"}</p>
                 <p>1. {lang === "ar" ? "مدة الامتحان 40 دقيقة فقط وسيتم الإرسال التلقائي فور انتهاء الوقت." : "Exam duration is 40 minutes sharp. It auto-submits upon completion."}</p>
-                <p>2. {lang === "ar" ? "ممنوع تماماً تصغير الصفحة، تغيير التاب، أو مغادرتها. القيام بذلك يقفل الامتحان فوراً بـ 0!" : "Leaving or switching this browser tab locks the entry directly and flags cheating!"}</p>
+                <p>2. {lang === "ar" ? "ممنوع تماماً تغيير التاب، فتح الـ Inspect، أو تقسيم عرض الشاشة على اللاب توب. الكيبورد على الموبايل مسموح بها بالكامل!" : "Leaving the tab, opening Inspect Element, or splitting the window width locks entry. Mobile keyboards are fully allowed!"}</p>
               </div>
 
               <button
@@ -939,10 +942,8 @@ window.addEventListener("resize", handleCheatDetection);
           </div>
         )}
 
-        {/* المرحلة الثانية: ورقة الامتحان الفعالة */}
         {examStarted && !examSubmitted && (
           <div className="space-y-8">
-            {/* بار التايمر الثابت والمراقب الفوري */}
             <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-4 sticky top-16 z-40 backdrop-blur flex justify-between items-center shadow-md">
               <div>
                 <p className="text-sm font-semibold text-slate-200">{studentInfo.name}</p>
@@ -958,7 +959,6 @@ window.addEventListener("resize", handleCheatDetection);
               </div>
             </div>
 
-            {/* الجزء الأول: 20 اختيار من متعدد */}
             <div>
               <h3 className="text-xl font-bold text-indigo-400 mb-4 border-b border-slate-800 pb-2">
                 {lang === "ar" ? "أولاً: أسئلة الاختيار من متعدد (20 سؤال عشوائي)" : "Part 1: Multiple Choice (20 Random MCQs)"}
@@ -992,7 +992,6 @@ window.addEventListener("resize", handleCheatDetection);
               </div>
             </div>
 
-            {/* الجزء الثاني: 5 أسئلة مقالية برمجية */}
             <div className="pt-6">
               <h3 className="text-xl font-bold text-indigo-400 mb-4 border-b border-slate-800 pb-2">
                 {lang === "ar" ? "ثانياً: التطبيق المقالي والبرمجي (5 أسئلة عشوائية)" : "Part 2: Code Architecture & Essay (5 Tasks)"}
@@ -1015,7 +1014,6 @@ window.addEventListener("resize", handleCheatDetection);
               </div>
             </div>
 
-            {/* زر الحفظ والتسليم */}
             <button
               onClick={() => triggerAutoSubmit(false)}
               className="w-full bg-emerald-600 hover:bg-emerald-500 py-4 rounded-xl font-bold tracking-wide transition text-white shadow-lg shadow-emerald-600/20"
@@ -1025,7 +1023,6 @@ window.addEventListener("resize", handleCheatDetection);
           </div>
         )}
 
-        {/* المرحلة الثالثة: شاشة التسليم النهائي وإخفاء النتائج عن الطالب */}
         {examSubmitted && (
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-6 max-w-md mx-auto shadow-xl mt-12">
             <div className="w-16 h-16 bg-emerald-950 border border-emerald-800 rounded-full flex items-center justify-center mx-auto text-emerald-400 font-bold text-2xl">
@@ -1041,7 +1038,7 @@ window.addEventListener("resize", handleCheatDetection);
               </h2>
               <p className="text-slate-400 text-sm mt-3 leading-relaxed">
                 {cheatTriggered
-                  ? (lang === "ar" ? "بسبب رصد محاولة خروجك من التاب أو تصغير المتصفح، تم قفل الصفحة فوراً وسحب تقدمك الحالي وإرساله مباشرة للبشمهندس محمد." : "Due to window focus loss or tab switching, progress was frozen and transmitted straight to Mr. Mohamed.")
+                  ? (lang === "ar" ? "بسبب رصد محاولة غش (تغيير عرض النافذة، فتح Inspect Element، أو تقسيم الشاشة على اللاب توب)، تم قفل الصفحة فوراً وسحب تقدمك الحالي وإرساله مباشرة للبشمهندس محمد." : "Due to window horizontal resizing, Inspect Element initialization, or split-screen triggers, progress was frozen and transmitted straight to Mr. Mohamed.")
                   : (lang === "ar" ? "إجاباتك بالكامل اتسجلت في السيرفر ووصلت حالا للبشمهندس محمد عشان يصحح الجزء المقالي بنفسه ويعلن النتيجة لاحقاً." : "Your transcript has been cataloged and routed directly to Mr. Mohamed for manual grading.")}
               </p>
             </div>
