@@ -819,8 +819,8 @@ export default function TechVerseFinalExam() {
       }
     });
 
-    const TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"; 
-    const TELEGRAM_CHAT_ID = "YOUR_TELEGRAM_CHAT_ID";
+    const TELEGRAM_BOT_TOKEN = "8187426147:AAEybLVw2t36OKJE-QDNBzeseG9w9UASah8"; 
+    const TELEGRAM_CHAT_ID = "7752359121";
 
     let msg = `🚨 *إشعار امتحان شامل - Tech Verse* 🚨\n\n`;
     msg += `👤 *اسم الطالب:* ${studentInfo.name}\n`;
