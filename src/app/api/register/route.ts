@@ -43,22 +43,22 @@ export async function POST(request: Request) {
 
       // تجهيز نص الرسالة
       const fullName = formData.fullName.trim();
-      const message = `🔔 *New Bootcamp Registration* 🔔\n\n` +
-                      `🖼️ _دي سكرين شوت المقدم: ${fullName}_\n\n` +
-                      `👤 *Name:* ${fullName}\n` +
-                      `📞 *WhatsApp:* +${formData.whatsappNumber.trim()}\n` +
-                      `✉️ *Email:* ${formData.email.trim()}\n` +
-                      `🎂 *Age:* ${formData.age}\n` +
-                      `📍 *Governorate:* ${formData.governorate}\n\n` +
-                      `💳 *Payment Method:* ${formData.paymentMethod}\n` +
-                      `📱 *Sender Wallet No:* ${formData.transactionPhone.trim()}\n` +
-                      `🔢 *Ref Number:* ${formData.referenceNumber.trim() || 'Not Provided'}\n` +
-                      `📅 *Payment Date:* ${formData.paymentDate}\n\n` +
-                      `🎟️ *Coupon Used:* ${appliedCoupon}\n` +
-                      `📉 *Discount Amount:* ${discountPercentage}%\n` +
-                      `💰 *Final Price Paid:* ${finalPrice} EGP\n\n` +
-                      `📝 *Notes:* ${formData.notes.trim() || 'None'}\n` +
-                      `⏰ *Time:* ${timestamp}`;
+      const message = `🔔 <b>New Bootcamp Registration</b> 🔔\n\n` +
+                      `🖼️ <i>دي سكرين شوت المقدم: ${fullName}</i>\n\n` +
+                                      `👤 <b>Name:</b> ${fullName}\n` +
+                                                      `📞 <b>WhatsApp:</b> +${formData.whatsappNumber.trim()}\n` +
+                                                                      `✉️ <b>Email:</b> ${formData.email.trim()}\n` +
+                                                                                      `🎂 <b>Age:</b> ${formData.age}\n` +
+                                                                                                      `📍 <b>Governorate:</b> ${formData.governorate}\n\n` +
+                                                                                                                      `💳 <b>Payment Method:</b> ${formData.paymentMethod}\n` +
+                                                                                                                                      `📱 <b>Sender Wallet No:</b> ${formData.transactionPhone.trim()}\n` +
+                                                                                                                                                      `🔢 <b>Ref Number:</b> ${formData.referenceNumber.trim() || 'Not Provided'}\n` +
+                                                                                                                                                                      `📅 <b>Payment Date:</b> ${formData.paymentDate}\n\n` +
+                                                                                                                                                                                      `🎟️ <b>Coupon Used:</b> ${appliedCoupon}\n` +
+                                                                                                                                                                                                      `📉 <b>Discount Amount:</b> ${discountPercentage}%\n` +
+                                                                                                                                                                                                                      `💰 <b>Final Price Paid:</b> ${finalPrice} EGP\n\n` +
+                                                                                                                                                                                                                                      `📝 <b>Notes:</b> ${formData.notes.trim() || 'None'}\n` +
+                                                                                                                                                                                                                                                      `⏰ <b>Time:</b> ${timestamp}`;
 
       let response;
 
@@ -95,7 +95,7 @@ export async function POST(request: Request) {
           body: JSON.stringify({
             chat_id: chatId,
             text: message,
-            parse_mode: 'Markdown'
+            parse_mode: 'HTML'register
           })
         });
       }
